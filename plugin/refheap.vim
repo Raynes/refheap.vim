@@ -30,6 +30,8 @@ endfunction
 " Define our commands.
 command! -range -nargs=? Refheap python refheap(<line1>, <line2>, <f-args>)
 
+pyfile pyperclip.py
+
 python << EOF
 
 import vim
