@@ -34,10 +34,11 @@ already know what to do.
 
 # Usage
 
-This library defines four commands: :RefheapBuffer,
-:RefheapBufferPrivate, :RefheapRegion, :RefheapRegionPrivate. It does
-not create keybindings for anything, so if you want those, you'll need
-to define them yourself.
+This library defines a single command, `:Refheap`. If you run this
+command with no visual selection, it will paste the whole file. If you
+run the command with a visual selection, it'll only paste that specific
+region. By default, pastes are public. If you want to make them private,
+pass the `-p` option to `:Refheap`.
 
 By default, your pastes will be anonymous. If you want to associate them
 with an account, add the following to your `.vimrc`:
