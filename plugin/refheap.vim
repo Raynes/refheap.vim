@@ -12,7 +12,7 @@ if !exists('g:refheap_username')
 endif
 
 if !exists('g:refheap_api_url')
-  let g:refheap_api_url = 'https://refheap.com/api/'
+  let g:refheap_api_url = 'http://localhost:8080/api/'
 endif
 
 " I didn't come up with this, but it seems to work for getting the currently
@@ -20,7 +20,7 @@ endif
 function! GetVisualSelection()
   try
     let a_save = @a
-    normal! gv"ay
+    silent! normal! gv"ay
     return @a
   finally
     let @a = a_save
@@ -28,10 +28,7 @@ function! GetVisualSelection()
 endfunction
 
 " Define our commands.
-command! -range -nargs=0 RefheapRegion python refheap_region()
-command! -range -nargs=0 RefheapRegionPrivate python refheap_region_private()
-command! -nargs=0 RefheapBuffer python refheap_buffer()
-command! -nargs=0 RefheapBufferPrivate python refheap_buffer_private()
+command! -range -nargs=? Refheap python refheap(<line1>, <line2>, <f-args>)
 
 python << EOF
 
@@ -129,16 +126,15 @@ def buffer_contents():
 def selected():
     return vim.eval('GetVisualSelection()')
 
-def refheap(text, priv):
+def refheap_req(text, priv):
     data = {'language': LANGUAGES.get(vim.eval('expand("%:e")'), "Plain Text"),
-            'contents': text}
+            'contents': text,
+            'private': priv}
     username = vim.eval('g:refheap_username')
     token = vim.eval('g:refheap_token')
     if username and token:
         data['username'] = username
         data['token'] = token
-    if priv:
-        data['private'] = priv
     req = urllib2.Request(REFHEAP_URL + "paste", urllib.urlencode(data))
     try:
         res = json.loads(urllib2.urlopen(req).read())['url']
@@ -147,16 +143,14 @@ def refheap(text, priv):
     except urllib2.HTTPError, e:
         print e.read()
 
-def refheap_buffer():
-    refheap(buffer_contents(), "false")
-
-def refheap_buffer_private():
-    refheap(buffer_contents(), "true")
-
-def refheap_region():
-    refheap(selected(), "false")
-
-def refheap_region_private():
-    refheap(selected(), "true")
+def refheap(line1 = None, line2 = None, priv = None):
+    if priv == "-p":
+        priv = "true"
+    else:
+        priv = "false"
+    if line1 == line2:
+        refheap_req(buffer_contents(), priv)
+    else:
+        refheap_req(selected(), priv)
 
 EOF
