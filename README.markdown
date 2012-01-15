@@ -21,6 +21,10 @@ If you don't have pip:
 easy_install xerox
 ```
 
+*If you're on Linux, version 0.3.0 of xerox doesn't work due to a small syntax
+error in the Linux part of the library. I've only tested this with
+0.3.1.*
+
 If you're on Windows, you'll need to install the pywin32 library as well
 (in the same way you installed xerox).
 
