@@ -130,7 +130,7 @@ def selected():
     return vim.eval('GetVisualSelection()')
 
 def refheap(text, priv):
-    data = {'language': LANGUAGES[vim.eval('expand("%:e")')],
+    data = {'language': LANGUAGES.get(vim.eval('expand("%:e")'), "Plain Text"),
             'contents': text}
     username = vim.eval('g:refheap_username')
     token = vim.eval('g:refheap_token')
