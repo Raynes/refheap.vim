@@ -12,7 +12,7 @@ if !exists('g:refheap_username')
 endif
 
 if !exists('g:refheap_api_url')
-  let g:refheap_api_url = 'http://localhost:8080/api/'
+  let g:refheap_api_url = 'https://refheap.com/api/'
 endif
 
 " I didn't come up with this, but it seems to work for getting the currently
@@ -29,8 +29,6 @@ endfunction
 
 " Define our commands.
 command! -range -nargs=? Refheap python refheap(<line1>, <line2>, <f-args>)
-
-pyfile pyperclip.py
 
 python << EOF
 
