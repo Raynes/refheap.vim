@@ -33,8 +33,9 @@ distro doesn't already have it. On OS X, you'll need pbcopy installed,
 but it should be installed by default. On Windows, you shouldn't need
 anything but the pywin32 library.
 
-You'll want to copy `plugin/` to `~/.vim`. If you're using pathogen, you
-already know what to do.
+You'll want to copy `plugin/` and `autoload/` to `~/.vim`. If you're
+using pathogen, you'll just want to put this whole directory into your
+pathogen path and it'll do the rest.
 
 # Usage
 
