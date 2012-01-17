@@ -1,5 +1,5 @@
-if !has('python')
-  echo "Refheap requires that your Vim be compiled with +python."
+if !has('ruby')
+  echo "Refheap requires that your Vim be compiled with +ruby."
   finish
 endif
 
