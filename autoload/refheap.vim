@@ -30,8 +30,9 @@ endfunction
 
 ruby << EOF
 
+require 'rubygems'
 require 'rubyheap'
-require 'clipboard'
+require 'copier'
 
 $languages = {"clj" => "Clojure",
               "cljs" => "Clojure",
@@ -143,7 +144,7 @@ def refheap(line1 = nil, line2 = nil, priv = nil)
   ref = $heap.create(text, 
                      :language => $languages[VIM::evaluate('expand("%:e")')],
                      :private => priv)['url']
-  Clipboard.copy(ref)
+  Copier(ref)
   puts "Copied #{ref} to the clipboard."
 end
 
