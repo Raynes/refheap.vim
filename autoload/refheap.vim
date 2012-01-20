@@ -139,7 +139,7 @@ def refheap(line1 = nil, line2 = nil, priv = nil)
   if line1 == line2
     text = buffer_contents()
   else
-    text = VIM::eval("GetVisualSelection()")
+    text = VIM::evaluate("GetVisualSelection()")
   end
   ref = $heap.create(text, 
                      :language => $languages[VIM::evaluate('expand("%:e")')],
