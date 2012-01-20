@@ -119,7 +119,7 @@ $languages.default("Plain Text")
 user  = VIM::evaluate("g:refheap_username")
 token = VIM::evaluate("g:refheap_token")
 
-if user && token
+if not user.empty? && token.empty?
   $heap = Refheap::Paste.new(user, token)
 else
   $heap = Refheap::Paste.new()
