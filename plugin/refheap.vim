@@ -10,5 +10,5 @@ endif
 let loaded_refheap = 1
 
 " Define our commands.
-command! -range -nargs=? Refheap call refheap#Refheap(<line1>, <line2>, <f-args>)
+command! -range -nargs=? Refheap call refheap#Refheap(<count>, <line1>, <line2>, <f-args>)
 

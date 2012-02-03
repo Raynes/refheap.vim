@@ -23,9 +23,9 @@ function! GetVisualSelection()
 endfunction
 
 " This is easily the most insane I've ever written on purpose.
-function! refheap#Refheap(line1, line2, ...)
+function! refheap#Refheap(count, line1, line2, ...)
   let lastarg = a:0 == 1 ? ",'" . a:1 . "'" : ''
-  execute 'ruby refheap(' . a:line1 . ',' . a:line2 . lastarg . ')'
+  execute 'ruby refheap(' . a:count . ',' . a:line1 . ',' . a:line2 . lastarg . ')'
 endfunction
 
 ruby << EOF
@@ -34,85 +34,85 @@ require 'rubygems'
 require 'rubyheap'
 require 'copier'
 
-$languages = {"clj" => "Clojure",
-              "cljs" => "Clojure",
-              "fy" => "Fancy",
-              "groovy" => "Groovy",
-              "factor" => "Factor",
-              "io" => "Io",
-              "ioke" => "Ioke",
-              "lua" => "Lua",
-              "pl" => "Perl",
-              "perl" => "Perl",
-              "py" => "Python",
-              "rb" => "Ruby",
-              "mirah" => "Duby",
-              "tcl" => "Tcl",
-              "ada" => "Ada",
-              "c" => "C",
-              "cpp" => "C++",
-              "d" => "D",
-              "dylan" => "Dylan",
-              "flx" => "Felix",
-              "fortran" => "Fortran",
-              "nim" => "Nimrod",
-              "go" => "Go",
-              "java" => "Java",
-              "def" => "Modula-2",
-              "mod" => "Module-2",
-              "ooc" => "ooc",
-              "m" => "Objective-C",
-              "pro" => "Prolog",
-              "prolog" => "Prolog",
-              "scala" => "Scala",
-              "vala" => "Vala",
-              "boo" => "Boo",
-              "cs" => "C#",
-              "fs" => "F#",
-              "n" => "Nemerle",
-              "vb" => "VB.NET",
-              "lisp" => "Common Lisp",
-              "erl" => "Erlang",
-              "hs" => "Haskell",
-              "lhs" => "Literate Haskell",
-              "ml" => "OCaml",
-              "scm" => "Scheme",
-              "rkt" => "Scheme",
-              "ss" => "Scheme",
-              "v" => "Verilog",
-              "r" => "R",
-              "abap" => "ABAP",
-              "applescript" => "AppleScript",
-              "ahk" => "Autohotkey",
-              "awk" => "Awk",
-              "sh" => "Bash",
-              "bat" => "Batch",
-              "bf" => "Brainfuck",
-              "befunge" => "Befunge",
-              "ns2" => "NewSpeak",
-              "ps" => "PostScript",
-              "proto" => "Protobuf",
-              "r3" => "REBOL",
-              "st" => "Smalltalk",
-              "cmake" => "CMake",
-              "dpatch" => "Darcs Patch",
-              "diff" => "Diff",
-              "init" => "INI",
-              "properties" => "Java Properties",
-              "rst" => "rST",
-              "tex" => "LaTeX",
-              "vim" => "VimL",
-              "yaml" => "YAML",
+$languages = {"clj"          => "Clojure",
+              "cljs"         => "Clojure",
+              "fy"           => "Fancy",
+              "groovy"       => "Groovy",
+              "factor"       => "Factor",
+              "io"           => "Io",
+              "ioke"         => "Ioke",
+              "lua"          => "Lua",
+              "pl"           => "Perl",
+              "perl"         => "Perl",
+              "py"           => "Python",
+              "rb"           => "Ruby",
+              "mirah"        => "Duby",
+              "tcl"          => "Tcl",
+              "ada"          => "Ada",
+              "c"            => "C",
+              "cpp"          => "C++",
+              "d"            => "D",
+              "dylan"        => "Dylan",
+              "flx"          => "Felix",
+              "fortran"      => "Fortran",
+              "nim"          => "Nimrod",
+              "go"           => "Go",
+              "java"         => "Java",
+              "def"          => "Modula-2",
+              "mod"          => "Module-2",
+              "ooc"          => "ooc",
+              "m"            => "Objective-C",
+              "pro"          => "Prolog",
+              "prolog"       => "Prolog",
+              "scala"        => "Scala",
+              "vala"         => "Vala",
+              "boo"          => "Boo",
+              "cs"           => "C#",
+              "fs"           => "F#",
+              "n"            => "Nemerle",
+              "vb"           => "VB.NET",
+              "lisp"         => "Common Lisp",
+              "erl"          => "Erlang",
+              "hs"           => "Haskell",
+              "lhs"          => "Literate Haskell",
+              "ml"           => "OCaml",
+              "scm"          => "Scheme",
+              "rkt"          => "Scheme",
+              "ss"           => "Scheme",
+              "v"            => "Verilog",
+              "r"            => "R",
+              "abap"         => "ABAP",
+              "applescript"  => "AppleScript",
+              "ahk"          => "Autohotkey",
+              "awk"          => "Awk",
+              "sh"           => "Bash",
+              "bat"          => "Batch",
+              "bf"           => "Brainfuck",
+              "befunge"      => "Befunge",
+              "ns2"          => "NewSpeak",
+              "ps"           => "PostScript",
+              "proto"        => "Protobuf",
+              "r3"           => "REBOL",
+              "st"           => "Smalltalk",
+              "cmake"        => "CMake",
+              "dpatch"       => "Darcs Patch",
+              "diff"         => "Diff",
+              "init"         => "INI",
+              "properties"   => "Java Properties",
+              "rst"          => "rST",
+              "tex"          => "LaTeX",
+              "vim"          => "VimL",
+              "yaml"         => "YAML",
               "coffeescript" => "CoffeeScript",
-              "css" => "CSS",
-              "html" => "HTML",
-              "xml" => "XML",
-              "haml" => "HAML",
-              "js" => "Javascript",
-              "php" => "PHP",
-              "sass" => "SASS",
-              "txt" => "Plain Text",
-              "scaml" => "Scaml"}
+              "css"          => "CSS",
+              "html"         => "HTML",
+              "xml"          => "XML",
+              "haml"         => "HAML",
+              "js"           => "Javascript",
+              "php"          => "PHP",
+              "sass"         => "SASS",
+              "txt"          => "Plain Text",
+              "scaml"        => "Scaml"}
 
 $languages.default("Plain Text")
 
@@ -130,18 +130,18 @@ def buffer_contents()
   1.upto(buffer.count).map { |i| buffer[i] }.join("\n")
 end
 
-def refheap(line1 = nil, line2 = nil, priv = nil)
+def refheap(count, line1 = nil, line2 = nil, priv = nil)
   if priv == "-p"
     priv = "true"
   else
     priv = "false"
   end
-  if line1 == line2
+  if count < 1
     text = buffer_contents()
   else
     text = VIM::evaluate("GetVisualSelection()")
   end
-  ref = $heap.create(text, 
+  ref = $heap.create(text,
                      :language => $languages[VIM::evaluate('expand("%:e")')],
                      :private => priv)['url']
   Copier(ref)
