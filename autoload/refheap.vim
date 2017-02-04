@@ -10,6 +10,14 @@ if !exists('g:refheap_api_url')
   let g:refheap_api_url = 'https://www.refheap.com/api/'
 endif
 
+if !exists('g:refheap_use_register')
+  let g:refheap_use_register = 0
+endif
+
+if !exists('g:refheap_register')
+  let g:refheap_register = 'r'
+endif
+
 " I didn't come up with this, but it seems to work for getting the currently
 " selected region.
 function! GetVisualSelection()
@@ -34,7 +42,13 @@ import vim
 import json
 import urllib
 import urllib2
-import xerox
+
+xerox_installed = False
+try:
+    import xerox
+    xerox_installed = True
+except:
+    pass
 
 REFHEAP_URL = vim.eval('g:refheap_api_url')
 
@@ -59,8 +73,12 @@ def refheap_req(text, priv):
     req = urllib2.Request(REFHEAP_URL + "paste", urllib.urlencode(data))
     try:
         res = json.loads(urllib2.urlopen(req).read())['url']
-        xerox.copy(res)
-        print "Copied " + res + " to your clipboard."
+        if xerox_installed and vim.eval('g:refheap_use_register') == '0':
+            xerox.copy(res)
+            print "Copied " + res + " to your clipboard."
+        else:
+            vim.eval('setreg(g:refheap_register,"'+res+'")')
+            print "Copied " + res + " to vim register."
     except urllib2.HTTPError, e:
         print e.read()
 
